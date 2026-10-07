@@ -123,21 +123,20 @@ class Tienda:
 
     def guardar_datos(self, archivo):
         raiz = ET.Element("tienda")
-        productos_xml = ET.SubElement(raiz, "productos")
         for p in self.productos:
-            prod = ET.SubElement(productos_xml, "producto")
+            prod = ET.SubElement(raiz, "producto")
+            prod.set("id", str(p.id))
             ET.SubElement(prod, "nombre").text = p.nombre
-            ET.SubElement(prod, "id").text = str(p.id)
             ET.SubElement(prod, "precio").text = str(p.precio)
             ET.SubElement(prod, "cantidad").text = str(p.cantidad)
-        clientes_xml = ET.SubElement(raiz, "clientes")
         for c in self.clientes:
-            cli = ET.SubElement(clientes_xml, "cliente")
+            cli = ET.SubElement(raiz, "cliente")
+            cli.set("id", str(c.id))
             ET.SubElement(cli, "nombre").text = c.nombre
-            ET.SubElement(cli, "id").text = str(c.id)
             ET.SubElement(cli, "saldo").text = str(c.saldo)
         arbol = ET.ElementTree(raiz)
         arbol.write(archivo, encoding="utf-8", xml_declaration=True)
+        print("Archivo guardado de manera exitosa")
 
     def cargar_datos(self, archivo):
         try:
@@ -145,17 +144,17 @@ class Tienda:
             raiz = arbol.getroot()
             self.productos = []
             self.clientes = []
-            for prod in raiz.find("productos"):
-                p = Producto(prod.find("nombre").text,
-                             int(prod.find("id").text),
-                             float(prod.find("precio").text),
-                             int(prod.find("cantidad").text))
-                self.productos.append(p)
-            for cli in raiz.find("clientes"):
-                c = Cliente(cli.find("nombre").text,
-                            int(cli.find("id").text),
-                            float(cli.find("saldo").text))
-                self.clientes.append(c)
+            for prod in raiz.findall('producto'):
+                nombre = prod.find('nombre').text
+                id = int(prod.get('id'))
+                precio = float(prod.find('precio').text)
+                cantidad = int(prod.find('cantidad').text)
+                self.productos.append(Producto(nombre, id, precio, cantidad))
+            for cli in raiz.findall('cliente'):
+                nombre = cli.find('nombre').text
+                id = int(cli.get('id'))
+                saldo = float(cli.find('saldo').text)
+                self.clientes.append(Cliente(nombre, id, saldo))
         except:
             print("No se pudo cargar el archivo.")
 

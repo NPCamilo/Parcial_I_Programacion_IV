@@ -101,21 +101,19 @@ class GestorEmpleados:
             print(e)
 
     def guardar_empleados(self, archivo):
-        f = open(archivo, "w")
-        for e in self.empleados:
-            f.write(str(e.id) + ";" + e.nombre + ";" + str(e.salario_base) + ";" + str(e.anos_experiencia) + "\n")
-        f.close()
+        with open(archivo, "w") as f:
+            for e in self.empleados:
+                f.write(str(e.id) + ";" + e.nombre + ";" + str(e.salario_base) + ";" + str(e.anos_experiencia) + "\n")
 
     def cargar_empleados(self, archivo):
         try:
-            f = open(archivo, "r")
-            self.empleados = []
-            for linea in f:
-                datos = linea.strip().split(";")
-                if len(datos) == 4:
-                    e = Empleado(datos[1], int(datos[0]), float(datos[2]), int(datos[3]))
-                    self.empleados.append(e)
-            f.close()
+            with open(archivo, "r") as f:
+                self.empleados = []
+                for linea in f:
+                    datos = linea.strip().split(";")
+                    if len(datos) == 4:
+                        e = Empleado(datos[1], int(datos[0]), float(datos[2]), int(datos[3]))
+                        self.empleados.append(e)
         except:
             print("No se pudo cargar el archivo.")
 

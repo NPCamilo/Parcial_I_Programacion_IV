@@ -55,9 +55,8 @@ class Producto:
     def aumentar_inventario(self, cantidad):
         self.cantidad = self.cantidad + cantidad
 
-    def mostrar_informacion(self):
-        print("Producto: " + self.nombre + " | ID: " + str(self.id) +
-              " | Precio: " + str(self.precio) + " | Cantidad: " + str(self.cantidad))
+    def __str__(self):
+        return "Producto: " + self.nombre + " | ID: " + str(self.id) + " | Precio: " + str(self.precio) + " | Cantidad: " + str(self.cantidad)
 
 
 class Cliente:
@@ -76,8 +75,8 @@ class Cliente:
         print("No se puede realizar la compra (saldo o stock insuficiente).")
         return False
 
-    def mostrar_informacion(self):
-        print("Cliente: " + self.nombre + " | ID: " + str(self.id) + " | Saldo: " + str(self.saldo))
+    def __str__(self):
+        return "Cliente: " + self.nombre + " | ID: " + str(self.id) + " | Saldo: " + str(self.saldo)
 
 
 class Tienda:
@@ -115,11 +114,11 @@ class Tienda:
 
     def mostrar_productos(self):
         for p in self.productos:
-            p.mostrar_informacion()
+            print(p)
 
     def mostrar_clientes(self):
         for c in self.clientes:
-            c.mostrar_informacion()
+            print(c)
 
     def guardar_datos(self, archivo):
         raiz = ET.Element("tienda")

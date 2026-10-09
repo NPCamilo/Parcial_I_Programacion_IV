@@ -56,16 +56,14 @@ def menu():
             cesar = CifradoCesar(desplazamiento)
             cifrado = cesar.cifrar(texto)
             print("Texto cifrado:", cifrado)
-            f = open("cifrado.txt", "w")
-            f.write(str(desplazamiento) + "\n" + cifrado)
-            f.close()
+            with open("cifrado.txt", "w") as f:
+                f.write(str(desplazamiento) + "\n" + cifrado)
             print("Guardado en cifrado.txt")
         elif opcion == "2":
             try:
-                f = open("cifrado.txt", "r")
-                desplazamiento = int(f.readline().strip())
-                cifrado = f.readline().strip()
-                f.close()
+                with open("cifrado.txt", "r") as f:
+                    desplazamiento = int(f.readline().strip())
+                    cifrado = f.readline().strip()
                 cesar = CifradoCesar(desplazamiento)
                 print("Texto descifrado:", cesar.descifrar(cifrado))
             except:
